@@ -1,0 +1,33 @@
+*{
+	border: 1px solid blue;
+}
+
+.everything{
+	max-width: 600px;
+	margin: 0 auto;
+}
+
+.head{
+	width: 100%;
+}
+
+h2{
+	display: inline-block;
+}
+
+.main{
+	width: 100%;
+}
+
+.row{
+	display: flex;
+	flex-wrap: nowrap;
+	width: 500px;
+	margin: 0 auto;
+}
+
+#box{
+	margin: 0 auto;
+	min-height: 100px;
+	min-width: 100px;
+}
