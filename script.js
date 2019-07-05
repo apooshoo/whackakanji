@@ -1,12 +1,16 @@
 //option to set numOfPanels with input prompt
 var numOfPanels = 3
-var cell = null;
-var previousCell = null;
+var cell = "";
+var previousCell = "";
 var backImage = "url('poring.jpg')";
-// background-image: url('memeface.png');
+var timer = 20;
+var score = 0;
+var highScore = 0;
+
 
 window.onload = function(){
     createBoard();
+    countDown(timer);
     nextPopup();
 }
 
@@ -29,32 +33,31 @@ var createBoard = function(){
 
 var hit = function(){
     console.log("hit!");
-    // getRandomCell();
     clickTarget(event);
-    nextPopup();
+
 }
 
 
 //getRandomCell works!
 var getRandomCell = function(){
     var randomX = Math.floor((Math.random() * 3) + 1);
-    console.log("xcoord" + randomX);
     var randomY = Math.floor((Math.random() * 3) + 1);
-    console.log("ycoord" + randomY);
     cell = document.querySelector(`.row${randomX}.col${randomY}`);
-    console.log("Cell: " + cell);
 }
 
 var clickTarget = function(event){
     if (previousCell){
-        previousCell.style.backgroundImage = null;
-        previousCell.innerHTML = null;
+        previousCell.style.backgroundImage = "";
+        previousCell.innerHTML = "";
     }
     errorCheck(event);
-    getRandomCell();
     event.target.style.backgroundImage = backImage;
-    event.target.innerHTML === null;
+    event.target.innerHTML === "";
     previousCell = event.target;
+    cell = "";
+    addScore();
+    pushScore();
+    nextPopup();
 }
 
 //combine with click target
@@ -67,6 +70,51 @@ var errorCheck = function(event){
     if (event.target === cell){
         console.log("Next!");
     } else {
-        console.log("You Lost!");
+        alert("You Lost!");
+        resetBoard();
     }
+}
+
+var minus = function(){
+    var time = document.querySelector('.time');
+    timer -= 1;
+    time.innerHTML = timer;
+    if (timer === 0){
+        clearInterval(countDown);
+        alert("Time's up, try again!");
+        resetBoard();
+        timer = 20;
+        nextPopup();
+    }
+}
+var countDown = function(){
+    var ticktock = setInterval(minus, 1000);
+}
+
+var resetBoard = function(){
+    var mainBoard = document.querySelector('.main');
+    while (mainBoard.hasChildNodes()){
+        mainBoard.removeChild(mainBoard.lastChild);
+    }
+    cell.innerHTML = "";
+    previousCell.innerHTML = "";
+    timer = 20;
+    score = 0;
+    pushScore();
+    createBoard();
+    return;
+}
+
+var addScore = function(){
+    score += 1;
+    if (score > highScore){
+        highScore = score;
+    }
+}
+
+var pushScore = function(){
+    var scoreDisplay = document.querySelector('.score');
+    scoreDisplay.innerHTML = score;
+    var highScoreDisplay = document.querySelector('.highscore');
+    highScoreDisplay.innerHTML = highScore;
 }
