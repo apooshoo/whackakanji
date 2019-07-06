@@ -2,10 +2,30 @@
 var numOfPanels = 3
 var cell = "";
 var previousCell = "";
-var backImage = "url('poring.jpg')";
+var backImage = "url('poring.jpg')"; //delete this after you switch to kanji inputs!
 var timer = 20;
 var score = 0;
 var highScore = 0;
+
+var randomKanji = "";
+var searchGrade = 6; //vary this on input!
+
+var responseHandler = function(){
+    var response = JSON.parse(this.responseText);
+    // console.log(response);
+    //include 0 up to response.length minus 1
+    var kanjiIndex = Math.floor(Math.random() * response.length);
+    randomKanji = response[kanjiIndex];
+}
+
+var getRandomKanji = function(){
+    var request = new XMLHttpRequest();
+    //your request does responseHandler on load
+    request.addEventListener("load", responseHandler);
+    //open readies the system, and targets the URL
+    request.open("GET", `https://kanjiapi.dev/v1/kanji/grade-${searchGrade}`);
+    request.send();
+}
 
 
 window.onload = function(){
@@ -18,6 +38,7 @@ window.onload = function(){
 //createBoard works!
 //when i run createBox();, it should create a 3 by 3 grid, and attach event listener for hit() on click to each
 var createBoard = function(){
+    getRandomKanji();
     for (i = 1; i < 4; i += 1){ //using 4 instead of 3 so I don't have to +1
         var row = document.createElement('div');
         row.setAttribute("class", "row")
@@ -27,20 +48,11 @@ var createBoard = function(){
             col.setAttribute("class", `col${j}`);
             col.classList.add(`row${i}`);
             col.setAttribute("id", "box");
-            col.addEventListener("click", hit)
+            col.addEventListener("click", clickTarget)
             row.appendChild(col);
         }
     }
 }
-
-
-// on click on span
-var hit = function(){
-    console.log("hit!");
-    clickTarget(event);
-
-}
-
 
 //getRandomCell works! generates random cell and assigns to cell
 var getRandomCell = function(){
@@ -130,36 +142,26 @@ var pushScore = function(){
 //peculiarities: search by grades 1-6 (elementary, 1000+) and 8 (all of secondary, another 1000+)
 //eg:"https://kanjiapi.dev/v1/kanji/grade-8"
 
+
+///USING THE CODE BELOW
+
+// var response = "";
+// var randomKanji = "";
+// var searchGrade = 6; //vary this on input!
+
 // var responseHandler = function(){
-//     console.log("response text", this.responseText);
-//     var response = JSON.parse(this.responseText);
-//     console.log(response);
+//     response = JSON.parse(this.responseText);
+//     // console.log(response);
+//     //include 0 up to response.length minus 1
+//     var kanjiIndex = Math.floor(Math.random() * response.length);
+//     randomKanji = response[kanjiIndex];
 // }
-// var request = new XMLHttpRequest();
-// //your request does responseHandler on load
-// request.addEventListener("load", responseHandler);
-// //open readies the system, and targets the URL
-// request.open("GET", "https://kanjiapi.dev/v1/kanji/grade-1");
-// request.send();
 
-//test
-var response = "";
-var randomKanji = "";
-var searchGrade = 6; //vary this on input!
-
-var responseHandler = function(){
-    response = JSON.parse(this.responseText);
-    // console.log(response);
-    //include 0 up to response.length minus 1
-    var kanjiIndex = Math.floor(Math.random() * response.length);
-    randomKanji = response[kanjiIndex];
-}
-
-var getRandomKanji = function(){
-    var request = new XMLHttpRequest();
-    //your request does responseHandler on load
-    request.addEventListener("load", responseHandler);
-    //open readies the system, and targets the URL
-    request.open("GET", `https://kanjiapi.dev/v1/kanji/grade-${searchGrade}`);
-    request.send();
-}
+// var getRandomKanji = function(){
+//     var request = new XMLHttpRequest();
+//     //your request does responseHandler on load
+//     request.addEventListener("load", responseHandler);
+//     //open readies the system, and targets the URL
+//     request.open("GET", `https://kanjiapi.dev/v1/kanji/grade-${searchGrade}`);
+//     request.send();
+// }
