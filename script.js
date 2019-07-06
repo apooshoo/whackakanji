@@ -37,8 +37,11 @@ window.onload = function(){
 
 //createBoard works!
 //when i run createBox();, it should create a 3 by 3 grid, and attach event listener for hit() on click to each
+//Possibly, delay is making getRandomKanji not work the first time.
+//trying callback
 var createBoard = function(){
     getRandomKanji();
+    console.log(randomKanji);
     for (i = 1; i < 4; i += 1){ //using 4 instead of 3 so I don't have to +1
         var row = document.createElement('div');
         row.setAttribute("class", "row")
@@ -61,26 +64,45 @@ var getRandomCell = function(){
     cell = document.querySelector(`.row${randomX}.col${randomY}`);
 }
 
+//original clickTarget
+// var clickTarget = function(event){
+//     errorCheck(event);
+//     event.target.style.backgroundImage = backImage;
+//     event.target.innerHTML === "";
+//     previousCell = event.target;
+//     cell = "";
+//     addScore();
+//     pushScore();
+//     nextPopup();
+// }
 
+//test clickTarget
 var clickTarget = function(event){
     errorCheck(event);
-    event.target.style.backgroundImage = backImage;
-    event.target.innerHTML === "";
+    event.target.innerHTML = randomKanji;
     previousCell = event.target;
-    cell = "";
     addScore();
     pushScore();
     nextPopup();
 }
 
-//combine with click target
+//original nextPopup
+// var nextPopup = function(){
+//     if (previousCell){
+//         previousCell.style.backgroundImage = "";
+//         previousCell.innerHTML = "";
+//     }
+//     getRandomCell();
+//     cell.innerHTML = "Click here!";
+// }
+
+//test nextPopup
 var nextPopup = function(){
     if (previousCell){
-        previousCell.style.backgroundImage = "";
         previousCell.innerHTML = "";
     }
     getRandomCell();
-    cell.innerHTML = "Click here!";
+    cell.innerHTML = randomKanji;
 }
 
 var errorCheck = function(event){
