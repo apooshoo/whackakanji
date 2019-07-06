@@ -123,3 +123,43 @@ var pushScore = function(){
     var highScoreDisplay = document.querySelector('.highscore');
     highScoreDisplay.innerHTML = highScore;
 }
+
+//----------------------------AJAX STUFF!
+
+//site used: https://kanjiapi.dev/
+//peculiarities: search by grades 1-6 (elementary, 1000+) and 8 (all of secondary, another 1000+)
+//eg:"https://kanjiapi.dev/v1/kanji/grade-8"
+
+// var responseHandler = function(){
+//     console.log("response text", this.responseText);
+//     var response = JSON.parse(this.responseText);
+//     console.log(response);
+// }
+// var request = new XMLHttpRequest();
+// //your request does responseHandler on load
+// request.addEventListener("load", responseHandler);
+// //open readies the system, and targets the URL
+// request.open("GET", "https://kanjiapi.dev/v1/kanji/grade-1");
+// request.send();
+
+//test
+var response = "";
+var randomKanji = "";
+var searchGrade = 6; //vary this on input!
+
+var responseHandler = function(){
+    response = JSON.parse(this.responseText);
+    // console.log(response);
+    //include 0 up to response.length minus 1
+    var kanjiIndex = Math.floor(Math.random() * response.length);
+    randomKanji = response[kanjiIndex];
+}
+
+var getRandomKanji = function(){
+    var request = new XMLHttpRequest();
+    //your request does responseHandler on load
+    request.addEventListener("load", responseHandler);
+    //open readies the system, and targets the URL
+    request.open("GET", `https://kanjiapi.dev/v1/kanji/grade-${searchGrade}`);
+    request.send();
+}
