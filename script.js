@@ -14,6 +14,9 @@ window.onload = function(){
     nextPopup();
 }
 
+
+//createBoard works!
+//when i run createBox();, it should create a 3 by 3 grid, and attach event listener for hit() on click to each
 var createBoard = function(){
     for (i = 1; i < 4; i += 1){ //using 4 instead of 3 so I don't have to +1
         var row = document.createElement('div');
@@ -29,8 +32,9 @@ var createBoard = function(){
         }
     }
 }
-//when i run createBox();, it should create a 3 by 3 grid, and attach event listener for hit() on click to each
 
+
+// on click on span
 var hit = function(){
     console.log("hit!");
     clickTarget(event);
@@ -38,18 +42,15 @@ var hit = function(){
 }
 
 
-//getRandomCell works!
+//getRandomCell works! generates random cell and assigns to cell
 var getRandomCell = function(){
     var randomX = Math.floor((Math.random() * 3) + 1);
     var randomY = Math.floor((Math.random() * 3) + 1);
     cell = document.querySelector(`.row${randomX}.col${randomY}`);
 }
 
+
 var clickTarget = function(event){
-    if (previousCell){
-        previousCell.style.backgroundImage = "";
-        previousCell.innerHTML = "";
-    }
     errorCheck(event);
     event.target.style.backgroundImage = backImage;
     event.target.innerHTML === "";
@@ -62,6 +63,10 @@ var clickTarget = function(event){
 
 //combine with click target
 var nextPopup = function(){
+    if (previousCell){
+        previousCell.style.backgroundImage = "";
+        previousCell.innerHTML = "";
+    }
     getRandomCell();
     cell.innerHTML = "Click here!";
 }
@@ -70,7 +75,7 @@ var errorCheck = function(event){
     if (event.target === cell){
         console.log("Next!");
     } else {
-        alert("You Lost!");
+        console.log("You Lost!");
         resetBoard();
     }
 }
@@ -81,7 +86,7 @@ var minus = function(){
     time.innerHTML = timer;
     if (timer === 0){
         clearInterval(countDown);
-        alert("Time's up, try again!");
+        console.log("Time's up, try again!");
         resetBoard();
         timer = 20;
         nextPopup();
