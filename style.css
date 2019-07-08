@@ -1,14 +1,16 @@
-*{
+/**{
 	border: 1px solid blue;
-}
+}*/
 
 .everything{
 	max-width: 600px;
 	margin: 0 auto;
+
 }
 
 .head{
 	width: 100%;
+	font-size: 14px;
 }
 
 h2{
@@ -19,6 +21,10 @@ h2{
 	height: 400px;
 	width: 600px;
 	position: relative;
+	background-image: url('ripples.jpg');
+	background-repeat: no-repeat;
+	background-size: cover;
+	background-position: center center;
 }
 
 /*.row{
@@ -33,13 +39,25 @@ h2{
 	font-size: 60px;
 	border-radius: 50%;
 	text-align: center;
+	color: #4a4646;
 /*	margin: 0 auto;*/
 	background-size: contain;
 	padding: 10px;
 	background-color: pink;
 	visibility: visible;
 	opacity: 1;
-	transition: visibility .25s, opacity .25s ease-in-out;
+	transition: visibility .8s, opacity .8s ease-in-out;
+}
+
+.floating-text{
+	font-size: 40px;
+	border-radius: 50%;
+	background-color: pink;
+	visibility: visible;
+	opacity: 1;
+	transition: visibility 1s, opacity 1s ease-in-out;
+	min-width: 50px;
+	min-height: 50px;
 }
 
 /*#box:onclick{

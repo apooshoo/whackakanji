@@ -76,6 +76,9 @@ var makeDiv = function(){
     newDiv.innerHTML = randomKanji;
     cell = newDiv;
     divContainer.appendChild(cell);
+
+    console.log(newDiv.style.left)
+    console.log(newDiv.style.top)
 }
 
 var makeFakeDiv = function(){
@@ -101,12 +104,14 @@ var clickTarget = function(event){
     console.log("clicked!");
     // errorCheck(event)
     previousCell = event.target;
+    console.log("previous cell: ", previousCell)
     if (previousCell){
         previousCell.innerHTML = "";
         previousCell.style.visibility = 'hidden';
         previousCell.style.opacity = 0;
     }
     addScore();
+    addScoreText();
     pushScore();
     makeDiv();
 }
@@ -170,6 +175,30 @@ var pushScore = function(){
     var highScoreDisplay = document.querySelector('.highscore');
     highScoreDisplay.innerHTML = "High Score: " + highScore;
 }
+
+var addScoreText = function(){
+    console.log("enter add score -- previousCell: ", previousCell)
+    let xcoord = previousCell.style.left;
+    let ycoord = previousCell.style.top;
+    console.log(xcoord)
+    let plusText = document.createElement('span');
+    plusText.classList.add('floating-text');
+    plusText.innerHTML = "+1!";
+    plusText.style.position = 'absolute';
+    plusText.style.left = `${xcoord}`;
+    plusText.style.top = `${ycoord}`;
+    divContainer.appendChild(plusText);
+    console.log(plusText.style.left)
+    console.log(plusText.style.top)
+    // plusText.style.opacity = 0;
+    // plusText.style.visibility = "hidden";
+    setTimeout(function(){
+        plusText.style.opacity = 0;
+        plusText.style.visibility = "hidden";
+    }, 100);
+}
+
+
 //----------------------------AJAX STUFF!
 
 //site used: https://kanjiapi.dev/
