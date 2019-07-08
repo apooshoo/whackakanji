@@ -68,7 +68,7 @@ var getRandomKanji = function(){
 //Possibly, delay is making getRandomKanji not work the first time.
 //trying callback
 var createBoard = function(){
-    getRandomKanji(); //this line is test
+    hiuhihi(); //this line is test
     console.log(randomKanji);
     for (i = 1; i < 4; i += 1){ //using 4 instead of 3 so I don't have to +1
         var row = document.createElement('div');
