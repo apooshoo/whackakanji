@@ -2,6 +2,7 @@
 var numOfPanels = 3
 var cell = "";
 var previousCell = "";
+var backImage = "url('poring.jpg')"; //delete this after you switch to kanji inputs!
 var timer = 20;
 var score = 0;
 var highScore = 0;
@@ -9,35 +10,65 @@ var highScore = 0;
 var randomKanji = "";
 var searchGrade = 6; //vary this on input!
 
+//anthony test
+var globalArray = [1,2,3,4,5,6,7,8];
+var counter = 0;
+
 var responseHandler = function(){
     var response = JSON.parse(this.responseText);
+    // console.log(response);
+    //include 0 up to response.length minus 1
     var kanjiIndex = Math.floor(Math.random() * response.length);
     randomKanji = response[kanjiIndex];
+    counter += 1;      // anthonyhw
+    randomKanji = globalArray[counter];
+
 }
 
+//reassigning randomKanji is nested inside responseHandler
 var getRandomKanji = function(){
     var request = new XMLHttpRequest();
+    //your request does responseHandler on load
     request.addEventListener("load", responseHandler);
+    //open readies the system, and targets the URL
     request.open("GET", `https://kanjiapi.dev/v1/kanji/grade-${searchGrade}`);
     request.send();
+    // // randomKanji = "f";
+    // counter += 1;      // anthonyhw
+    // randomKanji = globalArray[counter];
     console.log(randomKanji);
+
 }
 
 
-window.onload = function(){
-    getRandomKanji();
-    setTimeout(startGame, 1000)
+// window.onload = function(){
+    // async function startUp(){
+    //     let firstKanji = await getRandomKanji()
+    //     let firstCreateBoard = await createBoard()
+    //     let firstCountDown = await countDown(timer)
+    //     let firstNextPopup = await nextPopup()
+    // }
+    // startUp();
+
+    // var promiseKanji = new Promise (function(resolve, reject){
+
+
+    // })
+
+
+    //original
     // createBoard();
     // countDown(timer);
-}
+    // nextPopup();
+// }
 
-var startGame = function(){
-    createBoard();
-    countDown(timer);
-}
 
+//createBoard works!
+//when i run createBox();, it should create a 3 by 3 grid, and attach event listener for hit() on click to each
+//Possibly, delay is making getRandomKanji not work the first time.
+//trying callback
 var createBoard = function(){
-    // getRandomKanji();
+    getRandomKanji(); //this line is test
     console.log(randomKanji);
     for (i = 1; i < 4; i += 1){ //using 4 instead of 3 so I don't have to +1
         var row = document.createElement('div');
@@ -52,10 +83,9 @@ var createBoard = function(){
             row.appendChild(col);
         }
     }
-    nextPopup();
 }
 
-
+//getRandomCell works! generates random cell and assigns to cell
 var getRandomCell = function(){
     var randomX = Math.floor((Math.random() * 3) + 1);
     var randomY = Math.floor((Math.random() * 3) + 1);
@@ -76,7 +106,8 @@ var getRandomCell = function(){
 
 //test clickTarget
 var clickTarget = function(event){
-    errorCheck(event)
+    errorCheck(event);
+    event.target.innerHTML = randomKanji;
     console.log("in clicktarget" + randomKanji)//delete
     previousCell = event.target;
     addScore();
@@ -121,10 +152,8 @@ var minus = function(){
         clearInterval(countDown);
         console.log("Time's up, try again!");
         resetBoard();
-        getRandomKanji();
-        nextPopup();
         timer = 20;
-
+        nextPopup();
     }
 }
 var countDown = function(){
@@ -132,11 +161,16 @@ var countDown = function(){
 }
 
 var resetBoard = function(){
+    var mainBoard = document.querySelector('.main');
+    while (mainBoard.hasChildNodes()){
+        mainBoard.removeChild(mainBoard.lastChild);
+    }
     cell.innerHTML = "";
     previousCell.innerHTML = "";
     timer = 20;
     score = 0;
     pushScore();
+    createBoard();
     return;
 }
 
