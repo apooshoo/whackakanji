@@ -21,7 +21,7 @@ h2{
 	height: 400px;
 	width: 600px;
 	position: relative;
-	background-image: url('ripples.jpg');
+	/*background-image: url('ripples.jpg');*/
 	background-repeat: no-repeat;
 	background-size: cover;
 	background-position: center center;
@@ -45,7 +45,7 @@ h2{
 	padding: 10px;
 	background-color: pink;
 	visibility: visible;
-	opacity: 1;
+	opacity: .9;
 	transition: visibility .8s, opacity .8s ease-in-out;
 }
 
@@ -54,10 +54,16 @@ h2{
 	border-radius: 50%;
 	background-color: pink;
 	visibility: visible;
-	opacity: 1;
+	opacity: .9;
 	transition: visibility 1s, opacity 1s ease-in-out;
 	min-width: 50px;
 	min-height: 50px;
+}
+
+.btn{
+	margin 0 auto;
+	width: 100px;
+	height: 50px;
 }
 
 /*#box:onclick{

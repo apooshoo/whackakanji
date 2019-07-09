@@ -9,8 +9,12 @@ var highScore = 0;
 
 var randomKanji = "";
 var fakeKanji = "";
-var searchGrade = 8; //vary this on input!
+var searchGrade = null;; //vary this on input!
 
+var ticktock = "";
+
+
+//------------------------get random kanji
 var responseHandler = function(){
     var response = JSON.parse(this.responseText);
     var kanjiIndex = Math.floor(Math.random() * response.length);
@@ -28,7 +32,9 @@ var getRandomKanji = function(){
     request.send();
     console.log(randomKanji);
 }
+//-----------------------------
 
+//-----------------------get fake kanji
 var responseHandler2 = function(){
     var response2 = JSON.parse(this.responseText);
     var kanji2Index = Math.floor(Math.random() * response2.length);
@@ -43,11 +49,17 @@ var getFakeKanji = function(){
     request.send();
     console.log(fakeKanji);
 }
+//----------------------------
 
 //makediv in getrandomkanji
 window.onload = function(){
-    getRandomKanji();
-    getFakeKanji();
+    goMenu();
+}
+
+var init = function(){
+    divContainer.innerHTML = null;
+    divContainer.style.backgroundImage = "url('ripples.jpg')";
+    resetBoard();
     countDown(timer);
 }
 
@@ -58,6 +70,7 @@ var divContainer = document.querySelector('.main');
 var divCounter = 0;
 var fakeDivCounter = 0;
 
+//-------------------------make kanji bubbles
 var makeDiv = function(){
     console.log("real kanji: " + randomKanji);
     newDiv = document.createElement('div');
@@ -81,10 +94,11 @@ var makeDiv = function(){
     console.log(newDiv.style.top)
 }
 
+//----------------------make fakeKanji bubbles
 var makeFakeDiv = function(){
     console.log("fake kanji: " + fakeKanji);
     fakeDiv = document.createElement('div');
-    divCounter += 1;
+    fakeDivCounter += 1;
     fakeDiv.setAttribute('class', 'box')
     fakeDiv.setAttribute('id', `box${divCounter}`);
     fakeDiv.style.width = `${divSize}px`;
@@ -99,7 +113,7 @@ var makeFakeDiv = function(){
     divContainer.appendChild(fakeDiv);
 }
 
-
+//--------------------on click on real kanji
 var clickTarget = function(event){
     console.log("clicked!");
     // errorCheck(event)
@@ -116,6 +130,8 @@ var clickTarget = function(event){
     makeDiv();
 }
 
+//-----------------------on click on fake kanji
+
 var clickedFake = function(event){
     console.log("wrong click!");
     previousFake = event.target;
@@ -130,34 +146,71 @@ var clickedFake = function(event){
 }
 
 
-//TIME NOT IN PLAY
+//-------------------time code
 var minus = function(){
     var time = document.querySelector('.time');
     timer -= 1;
     time.innerHTML = "Time: " + timer;
     if (timer === 0){
-        clearInterval(countDown);
+        clearInterval(ticktock);
         console.log("Time's up, try again!");
-        resetBoard();
-        timer = 20;
+        goMenu();
     }
 }
-//NOT IN PLAY
+
 var countDown = function(){
-    var ticktock = setInterval(minus, 1000);
+    ticktock = setInterval(minus, 1000);
 }
 
-//NOT IN PLAY
+//----------------reset code
+//made start menu. reset to menu not done
+var goMenu = function(){
+    divContainer.innerHTML = null;
+    divContainer.innerHTML = "TEST TEXT <br/>";
+    let btn = document.createElement("button");
+    btn.textContent = "Start";
+    btn.classList.add('btn');
+    btn.addEventListener('click', init);
+    divContainer.appendChild(btn);
+
+    //create select bar
+    let sel = document.createElement("select");
+    sel.classList.add("select");
+    //create options for grade 1-6
+    for (let o = 0; o < 6; o += 1){
+        let option = document.createElement("option");
+        option.text = `Grade ${o + 1} Kanji`;
+        option.value = o + 1;
+        sel.add(option, sel[0 + o]);
+    }
+    //create option for grade 8
+    let optionLast = document.createElement("option");
+    optionLast.text = "Secondary School Kanji";
+    optionLast.value = 8;
+    sel.add(optionLast, sel[6]);
+    //add event listener to and append select bar
+    sel.addEventListener('change', function(){
+        changeGrade(event)
+    });
+    divContainer.appendChild(sel);
+}
+
+//vary searchGrade with option selected (1-6, 8)
+var changeGrade = function(event){
+    searchGrade = event.target.value;
+}
+
 var resetBoard = function(){
     divContainer.innerHTML = null;
     getRandomKanji();
     getFakeKanji();
     timer = 20;
     score = 0;
-    pushScore();
+    // pushScore();
     return;
 }
 
+//----------------score code
 var addScore = function(){
     score += 1;
     if (score > highScore){
@@ -176,6 +229,7 @@ var pushScore = function(){
     highScoreDisplay.innerHTML = "High Score: " + highScore;
 }
 
+//--------------floating score code
 var addScoreText = function(){
     console.log("enter add score -- previousCell: ", previousCell)
     let xcoord = previousCell.style.left;
