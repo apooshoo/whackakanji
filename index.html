@@ -1,32 +1,34 @@
 <!DOCTYPE html>
 <html>
-<head>
-    <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
-
-    <link rel="stylesheet" type="text/css" href="style.css">
-    <title></title>
-</head>
-<body>
-    <section class="everything">
-        <div class="head">
-            <h2 class="time">Time: --</h2>
-            <h2 class="score">Current Score: --</h2>
-            <h2 class="highscore">High Score: --</h2>
-            <h2 class="goalkanji">Target Kanji: </h2>
-        </div>
-
-        <div class="main">
-
-        </div>
-
-        <div class="messagebar">
-
-        </div>
-
-    </section>
-
-
-
-<script type="text/javascript" src="script.js"></script>
-</body>
+    <head>
+        <link href="https://fonts.googleapis.com/css?family=Kosugi+Maru&display=swap" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title></title>
+    </head>
+    <body>
+        <section class="left">
+            <div class="left-bar">
+                <div class="gameInfo">
+                    <h2 class="time">Time: --</h2>
+                    <h2 class="score">Current Score: --</h2>
+                    <h2 class="highscore">High Score: --</h2>
+                </div>
+                <div class="kanjicard">
+                    <h2>Target Kanji:</h2>
+                    <div class="goalkanji"></div>
+                    <h2 class="kunyomi"></h2>
+                    <h2 class="onyomi"></h2>
+                    <h2 class="kanjiMeanings"></h2>
+                    <h2 class="jlptLevel"></h2>
+                </div>
+            </div>
+        </section>
+        <section class="right">
+            <div class="main">
+            </div>
+            <!--  <div class="messagebar">
+            </div> -->
+        </section>
+        <script type="text/javascript" src="script.js"></script>
+    </body>
 </html>

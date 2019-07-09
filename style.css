@@ -1,26 +1,62 @@
-/**{
+*{
 	border: 1px solid blue;
-}*/
-
-.everything{
-	font-family: 'Kosugi Maru', sans-serif;
-	max-width: 600px;
-	margin: 0 auto;
-
 }
 
-.head{
+body{
+	font-family: 'Kosugi Maru', sans-serif;
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+}
+
+.left{
+	width: 34%;
+}
+
+.left-bar{
 	width: 100%;
-	font-size: 14px;
+	height: 100%;
 }
 
 h2{
-	display: inline-block;
+	margin: 0;
+}
+
+.gameInfo{
+	margin-bottom: 0;
+	margin: 1px;
+	box-sizing: border-box;
+	height: 98px;
+	font-size: 14px;
+}
+
+
+
+.time{
+	text-align: center;
+	font-size: 50px;
+}
+
+
+.kanjicard{
+	text-align: center;
+	font-size: 12px;
+	font-weight: 100;
+}
+
+.goalkanji{
+	font-size: 230px;
+	text-align: center;
+}
+
+.right{
+	width: 65%
 }
 
 .main{
-	height: 400px;
-	width: 600px;
+	min-height: 500px;
+	/*width: 600px;*/
+	max-width: 100%;
 	position: relative;
 	/*background-image: url('ripples.jpg');*/
 	background-repeat: no-repeat;
@@ -38,7 +74,7 @@ h2{
 .box{
 	display: flex;
 	font-size: 60px;
-	border-radius: 50%;
+	border-radius:\ 50%;
 	justify-content: center;
 	align-content: center;
 	color: #4a4646;
@@ -62,10 +98,19 @@ h2{
 	min-height: 50px;
 }
 
+
+
 .btn{
-	margin 0 auto;
+	display: block;
+	margin: 0 auto;
+	margin-top: 200px;
 	width: 100px;
 	height: 50px;
+}
+
+.select{
+	display: block;
+	margin: 50px auto;
 }
 
 /*#box:onclick{
