@@ -185,7 +185,7 @@ var loopMakeDiv = function(){
         let buffer = startInterval / 2;
         randomInterval = Math.floor(Math.random() * startInterval) + buffer;
         makeDiv();
-        if (timer > (startInterval / 500)){
+        if (timer > 2){
             loopMakeDiv();
         } else {
             return;
@@ -200,7 +200,7 @@ var loopFakeDiv = function(){
         let buffer = startInterval / 2;
         randomInterval = Math.floor(Math.random() * startInterval) + buffer;
         getFakeKanji();
-        if (timer > (startInterval / 500)){
+        if (timer > 2){
             loopFakeDiv();
         } else {
             return;
@@ -305,24 +305,64 @@ var goMenu = function(){
         changeDifficulty(event)
     });
     divContainer.appendChild(diffSel);
+
+    let audioSel = document.createElement("select");
+    audioSel.classList.add("select");
+    audioSel.setAttribute("id", "audioSelect");
+    for (let q = 0; q < 3; q += 1){
+        let audioOpt = document.createElement("option");
+        audioOpt.setAttribute('id', `audio${q + 1}`)
+        audioOpt.value = q + 1;
+        audioSel.add(audioOpt, audioSel[q]);
+    }
+    audioSel.addEventListener('change', function(){
+        changeAudio(event)
+    });
+    divContainer.appendChild(audioSel);
+    document.querySelector("#audioSelect")[0].innerHTML = "karen-chan (monogatari)";
+    document.querySelector("#audioSelect")[1].innerHTML = "hourousha (monogatari)";
+    document.querySelector("#audioSelect")[2].innerHTML = "nekobus (ghibli jazz)";
+
 }
+//FAILED IFRAME
+
+   // prepareFrame();
+// var prepareFrame = function(){
+//     let ifrm = document.createElement("iframe");
+//     ifrm.style.display = "none";
+//     ifrm.setAttribute("allow", "autoplay");
+//     ifrm.setAttribute("src", "火憐ちゃん.mp3");
+//     document.body.appendChild(ifrm);
+// }
+var changeAudio = function(event){
+    let setting = parseInt(event.target.value);
+    let x = document.getElementById('ifrm');
+    console.log("changed audio!");
+    console.log(setting);
+    if (setting === 1){
+        x.src = '火憐ちゃん.mp3';
+    } else if (setting === 2){
+        x.src = 'hourousha.mp3';
+    } else if (setting === 3){
+        x.src = "Nekubus.mp3";
+        console.log(document.getElementById('ifrm'))
+    }
+}
+// x.setAttribute("src", "hourousha.mp3")
 
 
 // vary startInterval and defaultFadeout (now 1000 and 3000)
 //2000/3000 , 1000/2000, 500/1500
-
-
-//did not work!
 var changeDifficulty = function(event){
     var setting = parseInt(event.target.value);
     if (setting === 1){
         startInterval = 2000;
         defaultFadeout = 3000;
     } else if (setting === 2){
-        startInterval = 1000;
-        defaultFadeout = 2000;
+        startInterval = 1250;
+        defaultFadeout = 2500;
     } else if (setting === 3){
-        startInterval = 500;
+        startInterval = 750;
         defaultFadeout - 1500;
     } else {
         //defaults
