@@ -27,10 +27,10 @@ var searchGrade = 1;; //vary this on input!
 
 var ticktock = "";
 
-var startInterval = 500; //let user input with select or slider
+var startInterval = 3000; //let user input with select or slider
 var randomInterval = startInterval;
 
-var defaultFadeout = 1500;
+var defaultFadeout = 2000;
 //2000/3000 , 1000/2000, 500/1500
 
 
@@ -295,10 +295,10 @@ var goMenu = function(){
     //sel and option for difficulty
     let diffSel = document.createElement("select");
     diffSel.classList.add("select");
-    for (let p = 1; p < 4; p += 1){
+    for (let p = 0; p < 3; p += 1){
         let opt = document.createElement("option");
-        opt.text = `Power level required: >${p * 3000}`
-        opt.value = p;
+        opt.text = `Power level required: >${(p + 1) * 3000}`
+        opt.value = p + 1;
         diffSel.add(opt, diffSel[p]);
     }
     diffSel.addEventListener('change', function(){
@@ -310,9 +310,12 @@ var goMenu = function(){
 
 // vary startInterval and defaultFadeout (now 1000 and 3000)
 //2000/3000 , 1000/2000, 500/1500
+
+
+//did not work!
 var changeDifficulty = function(event){
-    let setting = event.target.value;
-    if (setting  === 1){
+    var setting = parseInt(event.target.value);
+    if (setting === 1){
         startInterval = 2000;
         defaultFadeout = 3000;
     } else if (setting === 2){
@@ -321,12 +324,18 @@ var changeDifficulty = function(event){
     } else if (setting === 3){
         startInterval = 500;
         defaultFadeout - 1500;
+    } else {
+        //defaults
+        startInterval = 2000;
+        defaultFadeout = 3000;
     }
 }
 
 
 //vary searchGrade with option selected (1-6, 8)
 var changeGrade = function(event){
+    //default
+    searchGrade = 1;
     searchGrade = event.target.value;
 }
 
