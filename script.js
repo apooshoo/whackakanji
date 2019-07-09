@@ -1,3 +1,17 @@
+//things I'm going to do:
+    //allow user to adjust interval between bubbles and fade out timer
+    //stop the last bubbles from lingering in the endgame screen for a few seconds
+    //simple background soundtrack
+//things I haven't been able to solve:
+    //certain bubbles not fading out
+        //possible solution: instead of assigning an autofade on 3s timeout when you makediv, make the original CSS properties 3s autofade and shorten it on click.
+
+//make floatingtext different colros to the bubbles
+//make the headers static, dont let them shift (span)
+//prevent overlaps
+//UI priorities: make sure character and time is forefront
+//scores can be shifted to a corner
+
 //option to set numOfPanels with input prompt
 var numOfPanels = 3
 var cell = "";
@@ -12,6 +26,15 @@ var fakeKanji = "";
 var searchGrade = 1;; //vary this on input!
 
 var ticktock = "";
+
+var startInterval = 1000; //let user input with select or slider
+var randomInterval = startInterval;
+
+var defaultFadeout = 3000;
+
+
+
+//also maybe add a setting for how quickly the kanji disappear
 
 
 //------------------------get random kanji
@@ -40,9 +63,10 @@ var responseHandler2 = function(){
     var response2 = JSON.parse(this.responseText);
     var kanji2Index = Math.floor(Math.random() * response2.length);
     fakeKanji = response2[kanji2Index];
-    makeFakeDiv();//loop fake kanji
+    makeFakeDiv();
 }
 
+//this will be looped!
 var getFakeKanji = function(){
     var request = new XMLHttpRequest();
     request.addEventListener("load", responseHandler2);
@@ -52,29 +76,28 @@ var getFakeKanji = function(){
 }
 //----------------------------
 
-//makediv in getrandomkanji
+//makeDiv in getrandomkanji
 window.onload = function(){
     goMenu();
 }
 
 var init = function(){
     divContainer.innerHTML = null;
-    divContainer.style.backgroundImage = "url('ripples.jpg')";
+    divContainer.style.backgroundImage = "url('gowpond.gif')";
     resetBoard();
     countDown(timer);
 }
 
 var divSize = 75;
-var newDiv = "";
-var fakeDiv = "";
+// var newDiv = "";
+// var fakeDiv = "";
 var divContainer = document.querySelector('.main');
 var divCounter = 0;
-var fakeDivCounter = 0;
 
 //-------------------------make kanji bubbles
 var makeDiv = function(){
     console.log("real kanji: " + randomKanji);
-    newDiv = document.createElement('div');
+    let newDiv = document.createElement('div');
     divCounter += 1;
     newDiv.setAttribute('class', 'box')
     newDiv.setAttribute('id', `box${divCounter}`);
@@ -88,25 +111,24 @@ var makeDiv = function(){
     newDiv.style.top = `${ycoord}px`;
     newDiv.addEventListener('click', clickTarget);
     newDiv.innerHTML = randomKanji;
-    cell = newDiv;
     //test auto fadeout
     let fadeCell = setTimeout(function(){
-        cell.innerHTML = null;
-        cell.style.opacity = 0;
-        cell.style.visibility = 'hidden';
-    }, 3000);
+        newDiv.innerHTML = null;
+        newDiv.style.opacity = 0;
+        newDiv.style.visibility = 'hidden';
+    }, defaultFadeout);
     //-------------------
-    divContainer.appendChild(cell);
+    divContainer.appendChild(newDiv);
 }
 
 
 //----------------------make fakeKanji bubbles
 var makeFakeDiv = function(){
     console.log("fake kanji: " + fakeKanji);
-    fakeDiv = document.createElement('div');
-    fakeDivCounter += 1;
+    let fakeDiv = document.createElement('div');
+    divCounter += 1;
     fakeDiv.setAttribute('class', 'box')
-    fakeDiv.setAttribute('id', `box${fakeDivCounter}`);
+    fakeDiv.setAttribute('id', `box${divCounter}`);
     fakeDiv.style.width = `${divSize}px`;
     fakeDiv.style.height = `${divSize}px`;
     let xcoord = Math.floor(Math.random() * (divContainer.offsetWidth - divSize));
@@ -121,10 +143,40 @@ var makeFakeDiv = function(){
         fakeDiv.innerHTML = null;
         fakeDiv.style.opacity = 0;
         fakeDiv.style.visibility = 'hidden';
-    }, 3000);
+    }, defaultFadeout);
     //------------------------
     divContainer.appendChild(fakeDiv);
 }
+
+//-------------------div-making loops
+
+//for makeDiv
+var loopMakeDiv = function(){
+    setTimeout(function(){
+        let buffer = startInterval / 2;
+        randomInterval = Math.floor(Math.random() * startInterval) + buffer;
+        makeDiv();
+        if (timer > (startInterval / 1000)){
+            loopMakeDiv();
+        } else {
+            return;
+        }
+    }, randomInterval)}
+
+// loopMakeDiv(); to loop makeDiv with the same Kanji
+
+//loopFakeDiv(); to loop getFakeKanji(); and makeDiv with different Kanji
+var loopFakeDiv = function(){
+    setTimeout(function(){
+        let buffer = startInterval / 2;
+        randomInterval = Math.floor(Math.random() * startInterval) + buffer;
+        getFakeKanji();
+        if (timer > (startInterval / 1000)){
+            loopFakeDiv();
+        } else {
+            return;
+        }
+    }, randomInterval)}
 
 
 //--------------------on click on real kanji
@@ -183,7 +235,7 @@ var countDown = function(){
 var goMenu = function(){
     divContainer.style.backgroundImage = null;
     divContainer.innerHTML = null;
-    divContainer.innerHTML = "TEST TEXT <br/>";
+    // divContainer.innerHTML = "TEST TEXT <br/>";
     let btn = document.createElement("button");
     btn.textContent = "Start";
     btn.classList.add('btn');
@@ -212,6 +264,9 @@ var goMenu = function(){
     divContainer.appendChild(sel);
 }
 
+
+// vary startInterval and defaultFadeout (now 1000 and 3000)
+
 //vary searchGrade with option selected (1-6, 8)
 var changeGrade = function(event){
     searchGrade = event.target.value;
@@ -219,10 +274,10 @@ var changeGrade = function(event){
 
 var resetBoard = function(){
     divContainer.innerHTML = null;
-    getRandomKanji(); //added a makeDiv loop inside
-    loopFakeDiv(); //getFakeKanji looped inside
     timer = 20;
     score = 0;
+    getRandomKanji(); //added a makeDiv loop inside
+    loopFakeDiv(); //getFakeKanji looped inside
     // pushScore();
     return;
 }
@@ -283,36 +338,6 @@ var minusScoreText = function(){
     }, 100);
 }
 
-//test async divmaking
-var startInterval = 1000; //let user input with select or slider
-var randomInterval = startInterval;
-//for makeDiv
-var loopMakeDiv = function(){
-    setTimeout(function(){
-        let buffer = startInterval / 2;
-        randomInterval = Math.floor(Math.random() * startInterval) + buffer;
-        makeDiv();
-        if (timer > 0){
-            loopMakeDiv();
-        } else {
-            return;
-        }
-    }, randomInterval)}
-
-// loopMakeDiv();
-
-//loop this getFakeKanji();
-var loopFakeDiv = function(){
-    setTimeout(function(){
-        let buffer = startInterval / 2;
-        randomInterval = Math.floor(Math.random() * startInterval) + buffer;
-        getFakeKanji();
-        if (timer > 0){
-            loopFakeDiv();
-        } else {
-            return;
-        }
-    }, randomInterval)}
 
 
 //----------------------------AJAX STUFF!
