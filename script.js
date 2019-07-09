@@ -9,7 +9,7 @@ var highScore = 0;
 
 var randomKanji = "";
 var fakeKanji = "";
-var searchGrade = null;; //vary this on input!
+var searchGrade = 1;; //vary this on input!
 
 var ticktock = "";
 
@@ -88,11 +88,19 @@ var makeDiv = function(){
     newDiv.addEventListener('click', clickTarget);
     newDiv.innerHTML = randomKanji;
     cell = newDiv;
+    //test auto fadeout
+    let fadeCell = setTimeout(function(){
+        cell.innerHTML = null;
+        cell.style.opacity = 0;
+        cell.style.visibility = 'hidden';
+    }, 3000);
+    //-------------------
     divContainer.appendChild(cell);
 
-    console.log(newDiv.style.left)
-    console.log(newDiv.style.top)
+
+
 }
+
 
 //----------------------make fakeKanji bubbles
 var makeFakeDiv = function(){
@@ -100,7 +108,7 @@ var makeFakeDiv = function(){
     fakeDiv = document.createElement('div');
     fakeDivCounter += 1;
     fakeDiv.setAttribute('class', 'box')
-    fakeDiv.setAttribute('id', `box${divCounter}`);
+    fakeDiv.setAttribute('id', `box${fakeDivCounter}`);
     fakeDiv.style.width = `${divSize}px`;
     fakeDiv.style.height = `${divSize}px`;
     let xcoord = Math.floor(Math.random() * (divContainer.offsetWidth - divSize));
@@ -110,13 +118,28 @@ var makeFakeDiv = function(){
     fakeDiv.style.top = `${ycoord}px`;
     fakeDiv.addEventListener('click', clickedFake);
     fakeDiv.innerHTML = fakeKanji;
+    //test auto fadeout-----
+    let fadeFakeCell = setTimeout(function(){
+        fakeDiv.innerHTML = null;
+        fakeDiv.style.opacity = 0;
+        fakeDiv.style.visibility = 'hidden';
+    }, 3000);
+    //------------------------
     divContainer.appendChild(fakeDiv);
 }
+
+//test async divmaking
+// var divInterval = 1000; //let user input with select or slider
+
+// var loop = function(){
+//     setTimeout(function(){
+//         counter += 1;
+//         console.log(counter);
+//         loop()}, divInterval)}
 
 //--------------------on click on real kanji
 var clickTarget = function(event){
     console.log("clicked!");
-    // errorCheck(event)
     previousCell = event.target;
     console.log("previous cell: ", previousCell)
     if (previousCell){
@@ -141,6 +164,7 @@ var clickedFake = function(event){
         previousFake.style.opacity = 0;
     }
     minusScore();
+    minusScoreText();
     pushScore();
     getFakeKanji();
 }
@@ -165,6 +189,7 @@ var countDown = function(){
 //----------------reset code
 //made start menu. reset to menu not done
 var goMenu = function(){
+    divContainer.style.backgroundImage = null;
     divContainer.innerHTML = null;
     divContainer.innerHTML = "TEST TEXT <br/>";
     let btn = document.createElement("button");
@@ -231,10 +256,8 @@ var pushScore = function(){
 
 //--------------floating score code
 var addScoreText = function(){
-    console.log("enter add score -- previousCell: ", previousCell)
     let xcoord = previousCell.style.left;
     let ycoord = previousCell.style.top;
-    console.log(xcoord)
     let plusText = document.createElement('span');
     plusText.classList.add('floating-text');
     plusText.innerHTML = "+1!";
@@ -242,13 +265,29 @@ var addScoreText = function(){
     plusText.style.left = `${xcoord}`;
     plusText.style.top = `${ycoord}`;
     divContainer.appendChild(plusText);
-    console.log(plusText.style.left)
-    console.log(plusText.style.top)
     // plusText.style.opacity = 0;
     // plusText.style.visibility = "hidden";
     setTimeout(function(){
         plusText.style.opacity = 0;
         plusText.style.visibility = "hidden";
+    }, 100);
+}
+
+var minusScoreText = function(){
+    let xcoord = previousFake.style.left;
+    let ycoord = previousFake.style.top;
+    let minusText = document.createElement('span');
+    minusText.classList.add('floating-text');
+    minusText.innerHTML = "-1!";
+    minusText.style.position = 'absolute';
+    minusText.style.left = `${xcoord}`;
+    minusText.style.top = `${ycoord}`;
+    divContainer.appendChild(minusText);
+    // plusText.style.opacity = 0;
+    // plusText.style.visibility = "hidden";
+    setTimeout(function(){
+        minusText.style.opacity = 0;
+        minusText.style.visibility = "hidden";
     }, 100);
 }
 
