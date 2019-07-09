@@ -27,10 +27,11 @@ var searchGrade = 1;; //vary this on input!
 
 var ticktock = "";
 
-var startInterval = 1000; //let user input with select or slider
+var startInterval = 500; //let user input with select or slider
 var randomInterval = startInterval;
 
-var defaultFadeout = 3000;
+var defaultFadeout = 1500;
+//2000/3000 , 1000/2000, 500/1500
 
 
 
@@ -111,7 +112,7 @@ window.onload = function(){
 
 var init = function(){
     divContainer.innerHTML = null;
-    divContainer.style.backgroundImage = "url('gowpond.gif')";
+    // divContainer.style.backgroundImage = "url('gowpond.gif')";
     resetBoard();
     countDown(timer);
 }
@@ -184,7 +185,7 @@ var loopMakeDiv = function(){
         let buffer = startInterval / 2;
         randomInterval = Math.floor(Math.random() * startInterval) + buffer;
         makeDiv();
-        if (timer > (startInterval / 1000)){
+        if (timer > (startInterval / 500)){
             loopMakeDiv();
         } else {
             return;
@@ -199,7 +200,7 @@ var loopFakeDiv = function(){
         let buffer = startInterval / 2;
         randomInterval = Math.floor(Math.random() * startInterval) + buffer;
         getFakeKanji();
-        if (timer > (startInterval / 1000)){
+        if (timer > (startInterval / 500)){
             loopFakeDiv();
         } else {
             return;
@@ -278,7 +279,7 @@ var goMenu = function(){
         let option = document.createElement("option");
         option.text = `Grade ${o + 1} Kanji`;
         option.value = o + 1;
-        sel.add(option, sel[0 + o]);
+        sel.add(option, sel[o]);
     }
     //create option for grade 8
     let optionLast = document.createElement("option");
@@ -290,10 +291,39 @@ var goMenu = function(){
         changeGrade(event)
     });
     divContainer.appendChild(sel);
+
+    //sel and option for difficulty
+    let diffSel = document.createElement("select");
+    diffSel.classList.add("select");
+    for (let p = 1; p < 4; p += 1){
+        let opt = document.createElement("option");
+        opt.text = `Power level required: >${p * 3000}`
+        opt.value = p;
+        diffSel.add(opt, diffSel[p]);
+    }
+    diffSel.addEventListener('change', function(){
+        changeDifficulty(event)
+    });
+    divContainer.appendChild(diffSel);
 }
 
 
 // vary startInterval and defaultFadeout (now 1000 and 3000)
+//2000/3000 , 1000/2000, 500/1500
+var changeDifficulty = function(event){
+    let setting = event.target.value;
+    if (setting  === 1){
+        startInterval = 2000;
+        defaultFadeout = 3000;
+    } else if (setting === 2){
+        startInterval = 1000;
+        defaultFadeout = 2000;
+    } else if (setting === 3){
+        startInterval = 500;
+        defaultFadeout - 1500;
+    }
+}
+
 
 //vary searchGrade with option selected (1-6, 8)
 var changeGrade = function(event){
