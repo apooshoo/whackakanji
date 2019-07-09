@@ -21,7 +21,8 @@ var responseHandler = function(){
     randomKanji = response[kanjiIndex];
     let target = document.querySelector('.goalkanji');
     target.innerHTML = "Target Kanji: " + randomKanji;
-    makeDiv();
+    // makeDiv();
+    loopMakeDiv();
 }
 
 
@@ -39,7 +40,7 @@ var responseHandler2 = function(){
     var response2 = JSON.parse(this.responseText);
     var kanji2Index = Math.floor(Math.random() * response2.length);
     fakeKanji = response2[kanji2Index];
-    makeFakeDiv();
+    makeFakeDiv();//loop fake kanji
 }
 
 var getFakeKanji = function(){
@@ -96,9 +97,6 @@ var makeDiv = function(){
     }, 3000);
     //-------------------
     divContainer.appendChild(cell);
-
-
-
 }
 
 
@@ -128,14 +126,6 @@ var makeFakeDiv = function(){
     divContainer.appendChild(fakeDiv);
 }
 
-//test async divmaking
-// var divInterval = 1000; //let user input with select or slider
-
-// var loop = function(){
-//     setTimeout(function(){
-//         counter += 1;
-//         console.log(counter);
-//         loop()}, divInterval)}
 
 //--------------------on click on real kanji
 var clickTarget = function(event){
@@ -150,7 +140,8 @@ var clickTarget = function(event){
     addScore();
     addScoreText();
     pushScore();
-    makeDiv();
+    //removed to test auto loop
+    // makeDiv();
 }
 
 //-----------------------on click on fake kanji
@@ -166,7 +157,8 @@ var clickedFake = function(event){
     minusScore();
     minusScoreText();
     pushScore();
-    getFakeKanji();
+    //removed to test auto loop
+    // getFakeKanji();
 }
 
 
@@ -227,8 +219,8 @@ var changeGrade = function(event){
 
 var resetBoard = function(){
     divContainer.innerHTML = null;
-    getRandomKanji();
-    getFakeKanji();
+    getRandomKanji(); //added a makeDiv loop inside
+    loopFakeDiv(); //getFakeKanji looped inside
     timer = 20;
     score = 0;
     // pushScore();
@@ -290,6 +282,37 @@ var minusScoreText = function(){
         minusText.style.visibility = "hidden";
     }, 100);
 }
+
+//test async divmaking
+var startInterval = 1000; //let user input with select or slider
+var randomInterval = startInterval;
+//for makeDiv
+var loopMakeDiv = function(){
+    setTimeout(function(){
+        let buffer = startInterval / 2;
+        randomInterval = Math.floor(Math.random() * startInterval) + buffer;
+        makeDiv();
+        if (timer > 0){
+            loopMakeDiv();
+        } else {
+            return;
+        }
+    }, randomInterval)}
+
+// loopMakeDiv();
+
+//loop this getFakeKanji();
+var loopFakeDiv = function(){
+    setTimeout(function(){
+        let buffer = startInterval / 2;
+        randomInterval = Math.floor(Math.random() * startInterval) + buffer;
+        getFakeKanji();
+        if (timer > 0){
+            loopFakeDiv();
+        } else {
+            return;
+        }
+    }, randomInterval)}
 
 
 //----------------------------AJAX STUFF!
