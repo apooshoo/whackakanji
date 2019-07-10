@@ -355,6 +355,9 @@ var changeAudio = function(event){
 //2000/3000 , 1000/2000, 500/1500
 var changeDifficulty = function(event){
     var setting = parseInt(event.target.value);
+    //defaults
+    startInterval = 2000;
+    defaultFadeout = 3000;
     if (setting === 1){
         startInterval = 2000;
         defaultFadeout = 3000;
@@ -364,11 +367,9 @@ var changeDifficulty = function(event){
     } else if (setting === 3){
         startInterval = 750;
         defaultFadeout - 1500;
-    } else {
-        //defaults
-        startInterval = 2000;
-        defaultFadeout = 3000;
     }
+
+
 }
 
 
