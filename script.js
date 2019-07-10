@@ -12,8 +12,7 @@
 //UI priorities: make sure character and time is forefront
 //scores can be shifted to a corner
 
-//option to set numOfPanels with input prompt
-var numOfPanels = 3
+
 var cell = "";
 var previousCell = "";
 var previousFake = "";
@@ -368,8 +367,6 @@ var changeDifficulty = function(event){
         startInterval = 750;
         defaultFadeout - 1500;
     }
-
-
 }
 
 
