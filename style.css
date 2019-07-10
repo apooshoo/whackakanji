@@ -96,6 +96,8 @@ h2{
 	font-size: 40px;
 	border-radius: 50%;
 	border: 1px solid black;
+	background-color: #546a59;
+	color: white;
 	visibility: visible;
 	opacity: .9;
 	/*transition: visibility 1s, opacity 1s ease-in-out;*/
